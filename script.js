@@ -6,6 +6,16 @@ let playerSelection;
 let outcome;
 let computerScore = 0;
 let playerScore = 0;
+let i = 0;
+let j = 0;
+const btn = document.addEventListener("click",btn.innerText);
+const final = document.getElementById("Final");
+/*const id = btn.forEach(function{
+    for(let i = 0; i<=btn.length; i++)
+    {
+        btn[i].innerText;
+    }
+});*/
 
 //functions
 function computerPlay() //returns a random play between rock, paper or scissors
@@ -16,12 +26,12 @@ function computerPlay() //returns a random play between rock, paper or scissors
 function playRound(computerSelection, playerSelection) //returns the outcome of a rock paper scissors round
 {
     computerSelection = computerPlay().toLowerCase();
-    playerSelection = playerSelection.toLowerCase();
+    playerSelection = btn.toLowerCase();
     if(playerSelection ==! null)
     {
         if(playerSelection === computerSelection)
         {
-            return ("It's a tie, please keep playing.");
+            return ("\nIt's a tie, please keep playing.");
         }
         else if(
             (playerSelection === "rock" && computerSelection === "paper") ||
@@ -29,7 +39,8 @@ function playRound(computerSelection, playerSelection) //returns the outcome of 
             (playerSelection === "scissors" && computerSelection === "rock")
         )
         {
-            return ("You lose the round!");
+            j += 1;
+            return ("\nYou Lose the round");
         }
         else if(
             (playerSelection === "rock" && computerSelection === "scissors") ||
@@ -37,11 +48,12 @@ function playRound(computerSelection, playerSelection) //returns the outcome of 
             (playerSelection === "scissors" && computerSelection === "paper")
         )
         {
-            return ("You win the round!");
+            i += 1;
+            return ("\nYou win the round!");
         }
         else 
         {
-            return("Please input Rock, Paper or Scissors.");
+            return("\nPlease input Rock, Paper or Scissors.");
         }
     }
     else
@@ -54,22 +66,27 @@ function game()
 {
     for(let i = 0; i < 5; i++)
     {
+        const div = document.getElementById("Score");
         playerSelection = prompt("Please enter rock, paper or scissors!", "");
         computerSelection = computerPlay();
         outcome = playRound(playerSelection, computerSelection);
-        if(outcome === "You lose the round!")
+        if(outcome === "\nYou lose the round!")
         {
             computerScore++;
-            console.log(outcome);
+            const myTxt = document.createTextNode(outcome + "\nPlayer:" + i + "\nComputer:" + j);
+            div.appendChild(myTxt);
         }
-        else if(outcome === "You win the round!")
+        else if(outcome === "\nYou win the round!")
         {
             playerScore++;
-            console.log(outcome);
+            const myTxt = document.createTextNode(outcome);
+            div.appendChild(myTxt);
         }
-        else if(outcome === "It's a tie, please keep playing.")
+        else if(outcome === "\nIt's a tie, please keep playing.")
         {
              i--;
+             const myTxt = document.createTextNode(outcome);
+             div.appendChild(myTxt);
         }
         else
         {
@@ -90,7 +107,7 @@ function game()
     {
         return("You canceled the game");
     } 
-}
+};
 
 //Main
-console.log(game());
+final.innerText = game();
