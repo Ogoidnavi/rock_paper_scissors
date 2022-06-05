@@ -1,113 +1,103 @@
 "use strict";
-//global variables
+//variables
 const arrayPlay = ["Rock", "Paper", "Scissors"];
-let computerSelection;
+const final = document.getElementById("Final");
 let playerSelection;
+let computerSelection;
 let outcome;
+let clicked;
 let computerScore = 0;
 let playerScore = 0;
-let i = 0;
-let j = 0;
-const btn = document.addEventListener("click",btn.innerText);
-const final = document.getElementById("Final");
-/*const id = btn.forEach(function{
-    for(let i = 0; i<=btn.length; i++)
-    {
-        btn[i].innerText;
-    }
-});*/
+let counter = 0;
 
 //functions
 function computerPlay() //returns a random play between rock, paper or scissors
 {
-   return arrayPlay[Math.floor(Math.random()* arrayPlay.length)];
+   return arrayPlay[Math.floor(Math.random()* arrayPlay.length)].toLowerCase();
 }
 
-function playRound(computerSelection, playerSelection) //returns the outcome of a rock paper scissors round
+function playRound(playerSelection, computerSelection) //returns the outcome of a rock paper scissors round
 {
-    computerSelection = computerPlay().toLowerCase();
-    playerSelection = btn.toLowerCase();
-    if(playerSelection ==! null)
+    console.log(playerSelection);
+    console.log(computerSelection);
+    if(playerSelection == computerSelection)
     {
-        if(playerSelection === computerSelection)
-        {
-            return ("\nIt's a tie, please keep playing.");
-        }
-        else if(
-            (playerSelection === "rock" && computerSelection === "paper") ||
-            (playerSelection === "paper" && computerSelection === "scissors") || 
-            (playerSelection === "scissors" && computerSelection === "rock")
-        )
-        {
-            j += 1;
-            return ("\nYou Lose the round");
-        }
-        else if(
-            (playerSelection === "rock" && computerSelection === "scissors") ||
-            (playerSelection === "paper" && computerSelection === "rock") ||
-            (playerSelection === "scissors" && computerSelection === "paper")
-        )
-        {
-            i += 1;
-            return ("\nYou win the round!");
-        }
-        else 
-        {
-            return("\nPlease input Rock, Paper or Scissors.");
-        }
+        return ("It's a tie, please keep playing.");
+    }
+    else if(
+        (playerSelection == "rock" && computerSelection == "paper") ||
+        (playerSelection == "paper" && computerSelection == "scissors") || 
+        (playerSelection == "scissors" && computerSelection == "rock")
+    )
+    {
+        return ("You lose the round!");
+    }
+    else if(
+        (playerSelection == "rock" && computerSelection == "scissors") ||
+        (playerSelection == "paper" && computerSelection == "rock") ||
+        (playerSelection == "scissors" && computerSelection == "paper")
+    )
+    {
+        return ("You win the round!");
+    }
+    else 
+    {
+        return("Please click on Rock, Paper or Scissors.");
+    }
+}
+
+function playerChoice(id)
+{
+    const div = document.getElementById("Score");
+    playerSelection = id;
+    computerSelection = computerPlay();
+    outcome = playRound(playerSelection, computerSelection);
+    if(outcome == "You lose the round!")
+    {
+        ++computerScore;
+        div.innerText = outcome  + "\nPlayer:" + playerScore + "\nComputer:" + computerScore;
+    }
+    else if(outcome == "You win the round!")
+    {
+        ++playerScore;
+        div.innerText = outcome  + "\nPlayer:" + playerScore + "\nComputer:" + computerScore;
+    }
+    else if(outcome == "It's a tie, please keep playing.")
+    {
+        counter--;
+        div.innerText = outcome  + "\nPlayer:" + playerScore + "\nComputer:" + computerScore;
     }
     else
     {
-        return null;
+        return "You Canceled the game!"
     }
 }
 
-function game()
+function gameOver(playerScore, computerScore)
 {
-    for(let i = 0; i < 5; i++)
-    {
-        const div = document.getElementById("Score");
-        playerSelection = prompt("Please enter rock, paper or scissors!", "");
-        computerSelection = computerPlay();
-        outcome = playRound(playerSelection, computerSelection);
-        if(outcome === "\nYou lose the round!")
-        {
-            computerScore++;
-            const myTxt = document.createTextNode(outcome + "\nPlayer:" + i + "\nComputer:" + j);
-            div.appendChild(myTxt);
-        }
-        else if(outcome === "\nYou win the round!")
-        {
-            playerScore++;
-            const myTxt = document.createTextNode(outcome);
-            div.appendChild(myTxt);
-        }
-        else if(outcome === "\nIt's a tie, please keep playing.")
-        {
-             i--;
-             const myTxt = document.createTextNode(outcome);
-             div.appendChild(myTxt);
-        }
-        else
-        {
-            break;
-        }
-        
-    }
-    
     if(playerScore > computerScore)
     {
-        return("Congratulations! You won the game!");
+        return final.innerText = "Congratulations! You won the game!";
     }
     else if(playerScore < computerScore)
     {
-        return("Too bad, you lost the game");
+        return final.innerText = "Too bad, you lost the game";
     }
-    else
-    {
-        return("You canceled the game");
-    } 
-};
+}
 
-//Main
-final.innerText = game();
+function game(btn)
+{
+    let player = btn.id.toLowerCase();    
+    playerChoice(player);
+    counter++;
+    if(counter == 5)    
+    {
+        gameOver(playerScore, computerScore);
+        end();
+    }
+}
+
+function end()
+{
+    setTimeout(() => {document.location.reload(true)}, 1000);
+}
